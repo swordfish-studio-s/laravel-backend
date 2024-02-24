@@ -10,12 +10,16 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\employer;
 
+//  auth: Jan-Pieter Ott
+//  Deze controller is verantwoordelijk voor het aanmaken van nieuwe gebruikers en de sessies die zij aanmaken.
 
 class UserController extends Controller
 {
     public function __construct() {
 
     }
+
+    //functie om voor een normale gebruiker om een account aan te maken
     public function signup(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -30,7 +34,6 @@ class UserController extends Controller
                 'status' => response::HTTP_BAD_REQUEST]);
         }
 
-        // If validation passes, create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -44,6 +47,7 @@ class UserController extends Controller
             'status' => response::HTTP_ACCEPTED]);
     }
 
+    //functie om voor een werkgever om een account aan te maken
     public function signupEmployer(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -71,6 +75,7 @@ class UserController extends Controller
             'status' => response::HTTP_ACCEPTED]);
     }
 
+    //functie om account gegevens op te halen
     public function me(){
 
         $user = JWTAuth::parseToken()->authenticate();
@@ -78,6 +83,7 @@ class UserController extends Controller
         return response()->json(['user' => $user]);
     }
 
+    //functie om gebruikers in te loggen.
     public function signin(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
@@ -91,7 +97,6 @@ class UserController extends Controller
             ]);
         }
 
-        // Attempt to authenticate the user
         if (!auth()->attempt($request->only('email', 'password'))) {
             return response()->json([
                 'message' => 'Invalid credentials',
@@ -108,6 +113,7 @@ class UserController extends Controller
         ]);
     }
 
+    //functie om de gebruikers uit te loggen.
     public function logout(Request $request){
 
         JWTAuth::parseToken()->invalidate();
