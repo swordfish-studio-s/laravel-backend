@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -58,14 +58,13 @@ class UserController extends Controller
                 'status' => response::HTTP_BAD_REQUEST]);
         }
 
-        // If validation passes, create the user
-        $user = employer::create([
+        $employer = employer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
 
-        auth()->login($user);
+        auth()->login($employer);
 
         return response()->json([
             'success' => 'Signup successful!',
@@ -73,12 +72,10 @@ class UserController extends Controller
     }
 
     public function me(){
-        $user= auth()->user();
 
-        return response()->json([
-            'email' => $user->email,
-            'name' => $user->name,
-        ]);
+        $user = JWTAuth::parseToken()->authenticate();
+
+        return response()->json(['user' => $user]);
     }
 
     public function signin(Request $request){
@@ -102,8 +99,11 @@ class UserController extends Controller
             ]);
         }
 
+        $token = JWTAuth::fromUser(Auth::user());
+
         return response()->json([
             'message' => 'Login successful',
+            'token' => $token,
             'status' => Response::HTTP_OK
         ]);
     }
