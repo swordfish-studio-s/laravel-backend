@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
@@ -20,10 +21,9 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
 //Route::get('/', [PostController::class, 'index'])->name('home')->middleware('guest')->middleware('throttle:5,1');
 
-Route::post('signup', [PostController::class, 'singup'])->middleware('throttle:5,1');
-Route::post('singupemployer', [PostController::class, 'signupEmployer'])->middleware('throttle:5,1');
-Route::get('me', [PostController::class, 'me'])->middleware('throttle:5,1')->middleware('jwt.auth');
-Route::post('logout', [PostController::class, 'logout'])->middleware('throttle:5,1')->middleware('jwt.auth');
+Route::post('signup',[UserController::class, 'signup'])->middleware('throttle:5,1');
+Route::get('me', [UserController::class, 'me'])->middleware('throttle:5,1')->middleware('jwt.auth');
+Route::post('logout', [UserController::class, 'logout'])->middleware('throttle:5,1')->middleware('jwt.auth');
 
 
 Route::prefix('post')->group(function () {

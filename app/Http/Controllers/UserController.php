@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-use App\Models\employer;
 
 //  auth: Jan-Pieter Ott
 //  Deze controller is verantwoordelijk voor het aanmaken van nieuwe gebruikers en de sessies die zij aanmaken.
@@ -41,34 +40,6 @@ class UserController extends Controller
         ]);
 
         auth()->login($user);
-
-        return response()->json([
-            'success' => 'Signup successful!',
-            'status' => response::HTTP_ACCEPTED]);
-    }
-
-    //functie om voor een werkgever om een account aan te maken
-    public function signupEmployer(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:3|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|max:255|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors(),
-                'status' => response::HTTP_BAD_REQUEST]);
-        }
-
-        $employer = employer::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        auth()->login($employer);
 
         return response()->json([
             'success' => 'Signup successful!',
