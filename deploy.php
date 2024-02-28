@@ -4,7 +4,7 @@ namespace Deployer;
 
 require 'recipe/laravel.php';
 
-set('repository', 'git@github.com:swordfish-studio-s/laravel-backend.git');
+set('repository', 'https://github.com/swordfish-studio-s/laravel-backend.git');
 
 set('branch', 'main');
 set('default_stage', 'production');
