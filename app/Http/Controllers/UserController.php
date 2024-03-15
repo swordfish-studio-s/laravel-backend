@@ -89,7 +89,7 @@ class UserController extends Controller
     // Function to get all users (only accessible for admin)
     public function getAllUsers(Request $request)
     {
-        $users = User::all();
+        $users = $request->user();
         return response()->json($users);
     }
 }
