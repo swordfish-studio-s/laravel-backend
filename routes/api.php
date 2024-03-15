@@ -19,7 +19,9 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 */
 
 
-//Route::get('/', [PostController::class, 'index'])->name('home')->middleware('guest')->middleware('throttle:5,1');
+//!!todo maak een validatie/session controller aan en gebrui de user controller alleen voor user dingen
+
+
 
 Route::post('signup',[UserController::class, 'signup'])->middleware('throttle:5,1');
 Route::post('signin',[UserController::class, 'signup'])->middleware('throttle:5,1');
@@ -34,6 +36,8 @@ Route::post('update', [PostController::class, 'update'])->middleware('jwt.auth')
 Route::post('delete', [PostController::class, 'delete'])->middleware('jwt.auth')->middleware('throttle:5,1');
 });
 
+// routes voor alles gerelateerd aan normale gebruikers.
+Route::get('users', [UserController::class, 'getAllUsers'])->middleware('throttle:5,1')->middleware('jwt.auth');
 Route::prefix('user')->group(function () {
     Route::get('data', [PostController::class, 'show'])->middleware('jwt.auth')->middleware('throttle:5,1');
     Route::post('create', [PostController::class, 'create'])->middleware('jwt.auth')->middleware('throttle:5,1');

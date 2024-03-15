@@ -21,6 +21,8 @@ class UserController extends Controller
     //functie om voor een normale gebruiker om een account aan te maken
     public function signup(Request $request)
     {
+
+        //Note voor lucy deze validatie moet je ook een veld mee sturen met de key 'password_confirmed'
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -39,8 +41,6 @@ class UserController extends Controller
             'is_admin' => 0,
             'password' => bcrypt($request->password),
         ]);
-
-        auth()->login($user);
 
         return response()->json([
             'success' => 'Signup successful!',
@@ -93,5 +93,11 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Gebruiker is uitgelogd',
             'status' => response::HTTP_ACCEPTED]);
+    }
+
+    public function getAllUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
     }
 }
