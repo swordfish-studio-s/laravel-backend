@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Generator;
 
 //  auth: Jan-Pieter Ott
 //  Deze controller is verantwoordelijk voor het aanmaken van nieuwe gebruikers en de sessies die zij aanmaken.
@@ -35,7 +36,7 @@ class UserController extends Controller
                 'status' => response::HTTP_BAD_REQUEST]);
         }
 
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'is_admin' => 0,
@@ -50,8 +51,7 @@ class UserController extends Controller
     //functie om account gegevens op te halen
     public function me(){
 
-        $user = JWTAuth::parseToken()->authenticate();
-
+        $user = auth()->user();
         return response()->json(['user' => $user]);
     }
 
@@ -76,7 +76,11 @@ class UserController extends Controller
             ]);
         }
 
-        $token = JWTAuth::fromUser(Auth::user());
+        $token = Str::random(32);
+
+        // Store token in the cache with 24-hour expiration
+        $userId = auth()->user()->id;
+        Cache::put($token, $userId, 1440);
 
         return response()->json([
             'message' => 'Login successful',
@@ -88,7 +92,18 @@ class UserController extends Controller
     //functie om de gebruikers uit te loggen.
     public function logout(Request $request){
 
-        JWTAuth::parseToken()->invalidate();
+        $validator = Validator::make($request->all(), [
+            'token' => 'required|string|max:255',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+                'status' => response::HTTP_BAD_REQUEST]);
+        }
+
+        Cache::forget($request->token);
 
         return response()->json([
             'message' => 'Gebruiker is uitgelogd',
