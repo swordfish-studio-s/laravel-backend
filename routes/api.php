@@ -22,13 +22,23 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 //Route::get('/', [PostController::class, 'index'])->name('home')->middleware('guest')->middleware('throttle:5,1');
 
 Route::post('signup',[UserController::class, 'signup'])->middleware('throttle:5,1');
+Route::post('signin',[UserController::class, 'signup'])->middleware('throttle:5,1');
 Route::get('me', [UserController::class, 'me'])->middleware('throttle:5,1')->middleware('jwt.auth');
 Route::post('logout', [UserController::class, 'logout'])->middleware('throttle:5,1')->middleware('jwt.auth');
 
 
-Route::prefix('post')->group(function () {
-Route::get('{post:slug}', [PostController::class, 'show'])->where('posts','[A-z_\-]+')->middleware('jwt.auth')->middleware('throttle:5,1');
-Route::post('create', [PostController::class, 'store'])->middleware('jwt.auth');
+Route::prefix('admin')->group(function () {
+Route::get('data', [PostController::class, 'show'])->middleware('jwt.auth')->middleware('throttle:5,1');
+Route::post('create', [PostController::class, 'create'])->middleware('jwt.auth')->middleware('throttle:5,1');
+Route::post('update', [PostController::class, 'update'])->middleware('jwt.auth')->middleware('throttle:5,1');
+Route::post('delete', [PostController::class, 'delete'])->middleware('jwt.auth')->middleware('throttle:5,1');
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('data', [PostController::class, 'show'])->middleware('jwt.auth')->middleware('throttle:5,1');
+    Route::post('create', [PostController::class, 'create'])->middleware('jwt.auth')->middleware('throttle:5,1');
+    Route::post('update', [PostController::class, 'update'])->middleware('jwt.auth')->middleware('throttle:5,1');
+    Route::post('delete', [PostController::class, 'delete'])->middleware('jwt.auth')->middleware('throttle:5,1');
 });
 
 
