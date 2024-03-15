@@ -1,9 +1,8 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class AuthenticateToken
 {
@@ -11,17 +10,28 @@ class AuthenticateToken
     {
         // Check if the request has an Authorization header
         if (!$request->hasHeader('Authorization')) {
-            return response()->json(['message' => 'Unauthorized: No token found'], 401);
+            return response()->json(['message' => 'Unauthorized: Bearer token missing'], 401);
         }
 
         // Retrieve the token from the Authorization header
-        $token = $request->header('Authorization');
+        $authorizationHeader = $request->header('Authorization');
+        $token = $this->parseBearerToken($authorizationHeader);
 
-        // Check if the token exists in the cache
-        if (!Cache::has($token)) {
-            return response()->json(['message' => 'Unauthorized: Invalid token'], 401);
+        // Check if the token is in Bearer token format
+        if (!$token) {
+            return response()->json(['message' => 'Unauthorized: Invalid Bearer token format'], 401);
         }
 
         return $next($request);
     }
+
+    protected function parseBearerToken($authorizationHeader)
+    {
+        if (strpos($authorizationHeader, 'Bearer ') === 0) {
+            return substr($authorizationHeader, 7);
+        }
+
+        return null;
+    }
 }
+
