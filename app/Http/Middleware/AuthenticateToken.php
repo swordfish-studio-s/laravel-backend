@@ -18,11 +18,11 @@ class AuthenticateToken
     public function handle($request, Closure $next)
     {
         // Check if the request has a token
-        if (!$request->hasHeader('token')) {
+        if (!$request->hasHeader('Authorization')) {
             return response()->json(['message' => 'Unauthorized no token found'], 404);
         }
 
-        $token = $request->header('token');
+        $token = $request->header('Authorization');
 
         // Check if the token exists in the cache
         if (!Cache::has($token)) {
