@@ -24,7 +24,7 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
 
 Route::post('signup',[UserController::class, 'signup'])->middleware('throttle:5,1');
-Route::post('signin',[UserController::class, 'signup'])->middleware('throttle:5,1');
+Route::post('signin',[UserController::class, 'signin'])->middleware('throttle:5,1');
 Route::get('me', [UserController::class, 'me'])->middleware('throttle:5,1')->middleware('jwt.auth');
 Route::post('logout', [UserController::class, 'logout'])->middleware('throttle:5,1')->middleware('jwt.auth');
 
