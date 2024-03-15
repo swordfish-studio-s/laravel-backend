@@ -37,7 +37,7 @@ Route::post('delete', [PostController::class, 'delete'])->middleware('auth.token
 });
 
 // routes voor alles gerelateerd aan normale gebruikers.
-Route::get('users', [UserController::class, 'getAllUsers'])->middleware('throttle:5,1')->middleware('auth.token');
+Route::get('users', [UserController::class, 'getAllUsers'])->middleware('auth.token')->middleware('throttle:5,1');
 Route::prefix('user')->group(function () {
     Route::get('data', [PostController::class, 'show'])->middleware('auth.token')->middleware('throttle:5,1');
     Route::post('create', [PostController::class, 'create'])->middleware('auth.token')->middleware('throttle:5,1');
