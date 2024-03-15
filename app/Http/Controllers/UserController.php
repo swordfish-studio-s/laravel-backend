@@ -49,14 +49,17 @@ class UserController extends Controller
     }
 
     //functie om account gegevens op te halen
-    public function me(){
+    public function me(Request $request){
+        $user = $request->user();
 
-        $user = auth()->user();
         return response()->json(['user' => $user]);
     }
 
     //functie om gebruikers in te loggen.
     public function signin(Request $request){
+        $user = $request->user();
+
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
@@ -91,6 +94,7 @@ class UserController extends Controller
 
     //functie om de gebruikers uit te loggen.
     public function logout(Request $request){
+        $user = $request->user();
 
         $validator = Validator::make($request->all(), [
             'token' => 'required|string|max:255',
@@ -110,8 +114,9 @@ class UserController extends Controller
             'status' => response::HTTP_ACCEPTED]);
     }
 
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
+        $user = $request->user();
         $users = User::all();
         return response()->json($users);
     }
