@@ -44,15 +44,3 @@ Route::prefix('user')->group(function () {
     Route::post('update', [PostController::class, 'update'])->middleware(['auth.token', 'throttle:5,1']);;
     Route::post('delete', [PostController::class, 'delete'])->middleware(['auth.token', 'throttle:5,1']);;
 });
-
-
-// Route::middleware('can:admin')->group(function () {
-
-//     Route::post('admin/posts', [AdminController::class, 'store']);
-//     Route::get('admin/posts/create', [AdminController::class, 'create']);
-//     Route::get('admin/posts', [AdminController::class, 'index']);
-//     Route::get('admin/posts/{post}/edit', [AdminController::class, 'edit']);
-//     Route::patch('admin/posts/{post}', [AdminController::class, 'update']);
-//     Route::delete('admin/posts/{post}', [AdminController::class, 'destroy']);
-
-// })->middleware('throttle:5,1');
