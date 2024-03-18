@@ -24,9 +24,9 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
 //routes die nu gebruikt kunnen worden
 Route::post('signup',[UserController::class, 'signup'])->middleware('throttle:5,1');
-Route::post('signin',[UserController::class, 'signin'])->middleware('throttle:5,1');
+Route::post('signin',[UserController::class, 'SignIn'])->middleware('throttle:5,1');
 Route::get('me', [UserController::class, 'me'])->middleware('throttle:5,1')->middleware('auth.token');
-Route::get('users', [UserController::class, 'getAllUsers'])->middleware(['auth.token', 'throttle:5,1']);
+Route::get('users', [UserController::class, 'getAllUsers'])->middleware('throttle:5,1')->middleware('auth.token');
 Route::post('logout', [UserController::class, 'logout'])->middleware('throttle:5,1')->middleware('auth.token');
 
 //routes voor admins

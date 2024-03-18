@@ -50,7 +50,7 @@ class UserController extends Controller
     }
 
     // Function to log in a user
-    public function signin(Request $request)
+    public function SignIn(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -89,7 +89,8 @@ class UserController extends Controller
     // Function to get all users (only accessible for admin)
     public function getAllUsers(Request $request)
     {
-        $users = $request->user();
+        $input = $request->all();
+        $users = $request->auth()->user();
         return response()->json($users);
     }
 }
