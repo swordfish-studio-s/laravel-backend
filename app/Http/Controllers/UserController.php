@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Mockery\Undefined;
 
 class UserController extends Controller
 {
@@ -83,6 +84,38 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User logged out',
             'status' => Response::HTTP_ACCEPTED
+        ]);
+    }
+
+    public function MakeUser(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|max:255|confirmed',
+            'is_admin' => 'boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+                'status' => Response::HTTP_BAD_REQUEST
+            ]);
+        }
+
+        $isAdmin = $request->input('is_admin', false);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'is_admin' => $isAdmin,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+            'status' => Response::HTTP_CREATED
         ]);
     }
 
