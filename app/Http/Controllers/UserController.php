@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-use Mockery\Undefined;
 
 class UserController extends Controller
 {
@@ -87,7 +86,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function MakeUser(Request $request){
+    public function CreateUser(Request $request){
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3|string|max:255',

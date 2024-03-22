@@ -16,6 +16,6 @@
         </style>
     </head>
     <body class="antialiased">
-        <p>temp</p>
+        <p>PS lucy heeft niet door dat ik images ga requiren voor mijn posts :D</p>
     </body>
 </html>

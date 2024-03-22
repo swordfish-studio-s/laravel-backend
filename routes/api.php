@@ -28,7 +28,9 @@ Route::post('signin',[UserController::class, 'SignIn'])->middleware('throttle:5,
 Route::get('me', [UserController::class, 'me'])->middleware('throttle:5,1')->middleware('auth.token');
 Route::get('users', [UserController::class, 'getAllUsers'])->middleware('throttle:5,1')->middleware('auth.token');
 Route::post('logout', [UserController::class, 'logout'])->middleware('throttle:5,1')->middleware('auth.token');
-Route::post('user/create', [UserController::class, 'MakeUser'])->middleware(['auth.token', 'throttle:5,1']);;
+Route::post('user/create', [UserController::class, 'CreateUser'])->middleware(['auth.token', 'throttle:5,1']);
+Route::post('post/create', [PostController::class, 'CreatePost'])->middleware(['auth.token', 'throttle:5,1']);
+
 
 //routes voor admins
 Route::prefix('admin')->group(function () {
