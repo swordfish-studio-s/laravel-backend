@@ -10,7 +10,16 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $gaurded = [];
+    protected $gaurded = ['id'];
+
+    protected $table = 'posts';
+
+
+    protected $fillable = [
+        'title',
+        'body',
+        'excerpt',
+    ];
 
     public function scopeFilter($query, array $filters){
 
@@ -28,11 +37,6 @@ class Post extends Model
             $query->whereHas('author', fn ($query)=>
                 $query->where('username', $author)));
 
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
     }
 
     public function author()
