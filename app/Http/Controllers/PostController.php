@@ -16,7 +16,7 @@ class PostController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:3|string|max:255',
-            'excerpt' => 'required|min:3|string|email|max:255',
+            'excerpt' => 'required|min:3|string|max:255',
             'body' => 'required|string|min:8|max:255',
         ]);
 
@@ -47,7 +47,7 @@ class PostController extends Controller
         public function viewUserPost(Request $request){
 
             $validator = Validator::make($request->all(), [
-                'email' => 'required|min:3|string|max:255',
+                'email' => 'required|min:3|email|string|max:255',
             ]);
 
             if ($validator->fails()) {
