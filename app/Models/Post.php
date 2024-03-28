@@ -13,6 +13,7 @@ class Post extends Model
     protected $table = 'posts';
     protected $gaurded = [];
     protected $fillable = [
+        'user_id',
         'title',
         'body',
         'excerpt',
