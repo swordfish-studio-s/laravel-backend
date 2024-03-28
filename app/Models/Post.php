@@ -11,11 +11,7 @@ class Post extends Model
     use HasFactory;
 
     protected $table = 'posts';
-
-    protected $hidden = [
-        'id',
-        'user_id',
-    ];
+    protected $gaurded = [];
     protected $fillable = [
         'title',
         'body',
