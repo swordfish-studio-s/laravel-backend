@@ -41,7 +41,6 @@ class UserController extends Controller
         ]);
     }
 
-    // Function to get logged in user details
     public function me(Request $request)
     {
         $user = $request->user();
@@ -64,7 +63,7 @@ class UserController extends Controller
         $token = Str::random(32);
 
         $userId = auth()->user()->id;
-        Cache::put($token, $userId, 1440);
+        Cache::put("$token", "$userId", now()->addMinutes(1440));
 
         return response()->json([
             'message' => 'Login successful',
