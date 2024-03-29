@@ -57,12 +57,12 @@ class PostController extends Controller
                 ]);
             }
 
-            $user = User::where('email', $request->email);
-            $post = Post::all()->where('user_id', $user);
+            $user = User::where('email', $request->email)->first();
+            $posts = $user->posts;
 
             return response()->json([
-                'message' => 'Post created successfully',
-                'post' => $post,
+                'message' => 'Post fetched successfully',
+                'posts' => $posts,
                 'status' => Response::HTTP_ACCEPTED]);
-        }
+    }
 }
