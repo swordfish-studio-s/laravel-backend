@@ -8,16 +8,13 @@ class AuthenticateToken
 {
     public function handle($request, Closure $next)
     {
-        // Check if the request has an Authorization header
         if (!$request->hasHeader('Authorization')) {
             return response()->json(['message' => 'Unauthorized: Bearer token missing'], 401);
         }
 
-        // Retrieve the token from the Authorization header
         $authorizationHeader = $request->header('Authorization');
         $token = $this->parseBearerToken($authorizationHeader);
 
-        // Check if the token is in Bearer token format
         if (!$token) {
             return response()->json(['message' => 'Unauthorized: Invalid Bearer token format'], 401);
         }

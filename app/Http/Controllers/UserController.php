@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 use App\Models\User;
 
 class UserController extends Controller
@@ -43,7 +44,9 @@ class UserController extends Controller
 
     public function me(Request $request)
     {
-        $user = $request->user();
+        $token = $request->bearerToken();
+        $userId = Cache::get($token);
+        $user = $request->user()->where("id", $userId);
 
         return response()->json(['user' => $user]);
     }
@@ -63,7 +66,7 @@ class UserController extends Controller
         $token = Str::random(32);
 
         $userId = auth()->user()->id;
-        Cache::put("$token", "$userId", now()->addMinutes(1440));
+        Cache::put("$token", "$userId", Carbon::now()->addMinutes(1440));
 
         return response()->json([
             'message' => 'Login successful',

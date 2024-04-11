@@ -18,7 +18,6 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 |
 */
 
-
 //!!todo maak een validatie/session controller aan en gebruik de user controller alleen voor user dingen
 
 //routes die nu gebruikt kunnen worden
@@ -31,20 +30,18 @@ Route::post('user/create', [UserController::class, 'CreateUser'])->middleware(['
 Route::post('post/create', [PostController::class, 'CreatePost'])->middleware(['auth.token', 'throttle:5,1']);
 Route::get('post/user', [PostController::class, 'viewUserPost'])->middleware(['auth.token', 'throttle:5,1']);
 
-
-
-
+//!! routes hieronder zijn nog niet in gebruik
 //routes voor admins
-Route::prefix('admin')->group(function () {
-Route::get('data', [PostController::class, 'show'])->middleware('auth.token')->middleware('throttle:5,1');
-Route::post('create', [PostController::class, 'create'])->middleware('auth.token')->middleware('throttle:5,1');
-Route::post('update', [PostController::class, 'update'])->middleware('auth.token')->middleware('throttle:5,1');
-Route::post('delete', [PostController::class, 'delete'])->middleware('auth.token')->middleware('throttle:5,1');
-});
+// Route::prefix('admin')->group(function () {
+// Route::get('data', [AdminController::class, 'show'])->middleware('auth.token')->middleware('throttle:5,1');
+// Route::post('create', [AdminController::class, 'create'])->middleware('auth.token')->middleware('throttle:5,1');
+// Route::post('update', [AdminController::class, 'update'])->middleware('auth.token')->middleware('throttle:5,1');
+// Route::post('delete', [AdminController::class, 'delete'])->middleware('auth.token')->middleware('throttle:5,1');
+// });
 
 // routes voor alles gerelateerd aan normale gebruikers.
-Route::prefix('user')->group(function () {
-    Route::get('data', [PostController::class, 'show'])->middleware(['auth.token', 'throttle:5,1']);;
-    Route::post('update', [PostController::class, 'update'])->middleware(['auth.token', 'throttle:5,1']);;
-    Route::post('delete', [PostController::class, 'delete'])->middleware(['auth.token', 'throttle:5,1']);;
-});
+// Route::prefix('user')->group(function () {
+//     Route::get('data', [PostController::class, 'show'])->middleware(['auth.token', 'throttle:5,1']);;
+//     Route::post('update', [PostController::class, 'update'])->middleware(['auth.token', 'throttle:5,1']);;
+//     Route::post('delete', [PostController::class, 'delete'])->middleware(['auth.token', 'throttle:5,1']);;
+// });
