@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthorizationController;
+
 use App\Http\Controllers\AdminController;
-use Tymon\JWTAuth\Http\Middleware\Authenticate;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +21,12 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 //!!todo maak een validatie/session controller aan en gebruik de user controller alleen voor user dingen
 
 //routes die nu gebruikt kunnen worden
-Route::post('signup',[UserController::class, 'signup'])->middleware('throttle:5,1');
-Route::post('signin',[UserController::class, 'SignIn'])->middleware('throttle:5,1');
+Route::post('signup',[AuthorizationController::class, 'signup'])->middleware('throttle:5,1');
+Route::post('signin',[AuthorizationController::class, 'SignIn'])->middleware('throttle:5,1');
+Route::post('logout', [AuthorizationController::class, 'logout'])->middleware('throttle:5,1')->middleware('auth.token');
+
 Route::get('me', [UserController::class, 'me'])->middleware('throttle:5,1')->middleware('auth.token');
 Route::get('users', [UserController::class, 'getAllUsers'])->middleware('throttle:5,1')->middleware('auth.token');
-Route::post('logout', [UserController::class, 'logout'])->middleware('throttle:5,1')->middleware('auth.token');
 Route::post('user/create', [UserController::class, 'CreateUser'])->middleware(['auth.token', 'throttle:5,1']);
 Route::post('post/create', [PostController::class, 'CreatePost'])->middleware(['auth.token', 'throttle:5,1']);
 Route::get('post/user', [PostController::class, 'viewUserPost'])->middleware(['auth.token', 'throttle:5,1']);

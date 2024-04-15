@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
-class UserController extends Controller
+class AuthorizationController extends Controller
 {
 
     // Function to register a new user
@@ -55,8 +55,8 @@ class UserController extends Controller
 
             $token = Str::random(32);
 
-            //$userId = auth()->user()->id;
-            Cache::put($token, 1440);
+            $userId = auth()->user()->id;
+            Cache::put($token, "$userId", 1440);
 
             return response()->json([
                 'message' => 'Login successful',
